@@ -18,7 +18,7 @@ func InitDB() error {
 	//自动迁移
 	db.AutoMigrate(&entity.User{})
 	db.AutoMigrate(&entity.Video{})
-	db.AutoMigrate(&entity.CommentResponse{})
+	db.AutoMigrate(&entity.Comment{})
 	db.AutoMigrate(&entity.Follow{})
 	db.AutoMigrate(&entity.Like{})
 	fmt.Println("db init")

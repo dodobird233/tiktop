@@ -9,11 +9,6 @@ import (
 	"tiktop/util"
 )
 
-type FavoriteListResponse struct {
-	entity.Response
-	VideoList []entity.VideoResponse `json:"video_list"`
-}
-
 // 点赞和取消赞操作
 func FavoriteAction(c *gin.Context) {
 	token := c.Query("token")
@@ -50,7 +45,7 @@ func FavoriteList(c *gin.Context) {
 		return
 	}
 	//封装返回
-	c.JSON(http.StatusOK, FavoriteListResponse{
+	c.JSON(http.StatusOK, entity.FavoriteListResponse{
 		Response: entity.Response{
 			StatusCode: 0,
 			StatusMsg:  "success",
