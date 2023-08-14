@@ -1,17 +1,17 @@
 package entity
 
 type UserData struct {
-	UserId          int64
-	Name            string
-	FollowCount     int64
-	FollowerCount   int64
-	IsFollow        bool
-	Avatar          string
-	BackgroundImage string
-	Signature       string
-	TotalFavorited  int64
-	WorkCount       int64
-	FavoriteCount   int64
+	UserId          int64  `json:"id"`
+	Name            string `json:"name"`
+	FollowCount     int64  `json:"follow_count,omitempty"`
+	FollowerCount   int64  `json:"follower_count,omitempty"`
+	IsFollow        bool   `json:"is_follow"`
+	Avatar          string `json:"avatar,omitempty"`
+	BackgroundImage string `json:"background_image,omitempty"`
+	Signature       string `json:"signature,omitempty"`
+	TotalFavorited  int64  `json:"total_favorited,omitempty"`
+	WorkCount       int64  `json:"work_count,omitempty"`
+	FavoriteCount   int64  `json:"favorite_count,omitempty"`
 }
 
 type User struct {

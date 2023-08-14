@@ -1,28 +1,29 @@
-package controller
+package entity
 
 type Response struct {
 	StatusCode int32  `json:"status_code"`
 	StatusMsg  string `json:"status_msg,omitempty"`
 }
 
-type Video struct {
-	Id            int64  `json:"id,omitempty"`
-	Author        User   `json:"author"`
-	PlayUrl       string `json:"play_url" json:"play_url,omitempty"`
-	CoverUrl      string `json:"cover_url,omitempty"`
-	FavoriteCount int64  `json:"favorite_count,omitempty"`
-	CommentCount  int64  `json:"comment_count,omitempty"`
-	IsFavorite    bool   `json:"is_favorite,omitempty"`
+type VideoResponse struct {
+	Id            int64    `json:"id"`
+	Author        UserData `json:"author"`
+	PlayUrl       string   `json:"play_url"`
+	CoverUrl      string   `json:"cover_url"`
+	FavoriteCount int64    `json:"favorite_count"`
+	CommentCount  int64    `json:"comment_count"`
+	IsFavorite    bool     `json:"is_favorite"`
+	Title         string   `json:"title"`
 }
 
-type Comment struct {
-	Id         int64  `json:"id,omitempty"`
-	User       User   `json:"user"`
-	Content    string `json:"content,omitempty"`
-	CreateDate string `json:"create_date,omitempty"`
+type CommentResponse struct {
+	Id         int64   `json:"id,omitempty"`
+	User       UserInf `json:"user"`
+	Content    string  `json:"content,omitempty"`
+	CreateDate string  `json:"create_date,omitempty"`
 }
 
-type User struct {
+type UserInf struct {
 	Id            int64  `json:"id,omitempty"`
 	Name          string `json:"name,omitempty"`
 	FollowCount   int64  `json:"follow_count,omitempty"`

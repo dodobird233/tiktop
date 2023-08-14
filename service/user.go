@@ -55,7 +55,7 @@ func UserInfoByUserId(userId int64) (userdata entity.UserData, err error) {
 		return
 	}
 	userdata.WorkCount = int64(len(videoIdList))
-	likesList, err2 := QueryLikesListByVideoIdList(&videoIdList)
+	likesList, err2 := QueryLikeCountListByVideoIdList(&videoIdList)
 	if err2 != nil {
 		err = err2
 		return

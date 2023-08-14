@@ -4,6 +4,6 @@ import (
 	"gorm.io/gorm"
 )
 
-var ( // 系统配置信息
+var ( // 全局变量
 	DB *gorm.DB // 数据库接口
 )

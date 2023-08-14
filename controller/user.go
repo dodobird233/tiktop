@@ -10,13 +10,13 @@ import (
 )
 
 type UserLoginResponse struct {
-	Response
+	entity.Response
 	UserId int64  `json:"user_id,omitempty"`
 	Token  string `json:"token"`
 }
 
 type UserResponse struct {
-	Response
+	entity.Response
 	User entity.UserData `json:"user"`
 }
 
@@ -31,7 +31,7 @@ func Register(c *gin.Context) {
 	tokenx, _ := util.CreateToken(strconv.FormatUint(uint64(user.UserId), 10), password)
 	c.JSON(http.StatusOK,
 		UserLoginResponse{
-			Response: Response{StatusCode: 0, StatusMsg: "Account registered successfully"},
+			Response: entity.Response{StatusCode: 0, StatusMsg: "Account registered successfully"},
 			UserId:   int64(user.UserId),
 			Token:    tokenx})
 	return
@@ -42,7 +42,7 @@ func Login(c *gin.Context) {
 	// 从数据库查询用户信息
 	user, err := service.Login(username, password)
 	if err != nil {
-		c.JSON(http.StatusOK, Response{StatusCode: 1, StatusMsg: "用户名或密码错误"})
+		c.JSON(http.StatusOK, entity.Response{StatusCode: 1, StatusMsg: "用户名或密码错误"})
 		return
 	}
 	// 生成对应 token
@@ -50,39 +50,39 @@ func Login(c *gin.Context) {
 	// 返回成功并生成响应 json
 	c.JSON(http.StatusOK,
 		UserLoginResponse{
-			Response: Response{StatusCode: 0, StatusMsg: "Login successfully"},
+			Response: entity.Response{StatusCode: 0, StatusMsg: "Login successfully"},
 			UserId:   int64(user.UserId),
 			Token:    tokenx})
 }
 
 func UserInfo(c *gin.Context) {
 	value := c.Query("user_id")
-	println(value)
-	userId, err := strconv.Atoi(c.Query("user_id"))
+	//println(value)
+	userId, err := strconv.Atoi(value)
 	if err != nil {
-		c.JSON(http.StatusOK, Response{StatusCode: 1, StatusMsg: "invalid id format"})
+		c.JSON(http.StatusOK, entity.Response{StatusCode: 1, StatusMsg: "invalid id format"})
 		return
 	}
 	token := c.Query("token")
 	claims, err := util.Gettoken(token)
 	if err != nil {
-		c.JSON(http.StatusOK, Response{StatusCode: 1, StatusMsg: "token error"})
+		c.JSON(http.StatusOK, entity.Response{StatusCode: 1, StatusMsg: "token error"})
 		return
 	}
 	var userdata entity.UserData
 	userdata, err = service.UserInfoByUserId(int64(userId))
 	if err != nil {
-		c.JSON(http.StatusOK, Response{StatusCode: 2, StatusMsg: "user data query failed"})
+		c.JSON(http.StatusOK, entity.Response{StatusCode: 2, StatusMsg: "user data query failed"})
 		return
 	}
-	currentId, _ := strconv.Atoi(claims.Userid)
+	currentId, _ := strconv.Atoi(claims.UserId)
 	isFollow, err := service.QueryFollowOrNot(int64(currentId), int64(userId))
 	if err != nil {
-		c.JSON(http.StatusOK, Response{StatusCode: 2, StatusMsg: "follow data query failed"})
+		c.JSON(http.StatusOK, entity.Response{StatusCode: 2, StatusMsg: "follow data query failed"})
 		return
 	}
 	c.JSON(http.StatusOK, UserResponse{
-		Response: Response{StatusCode: 0, StatusMsg: "OK"},
+		Response: entity.Response{StatusCode: 0, StatusMsg: "OK"},
 		User: entity.UserData{
 			userdata.UserId,
 			userdata.Name,
