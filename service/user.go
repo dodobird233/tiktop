@@ -46,8 +46,8 @@ func Login(username string, password string) (user *entity.User, err error) {
 }
 func UserInfoByUserId(userId int64) (userdata entity.UserData, err error) {
 	var user entity.User
-	flag, err := IsUserIdExist(userId)
-	if err != nil || !flag {
+	result := global.DB.Where("user_id = ?", userId).First(&user)
+	if result.RowsAffected == 0 {
 		err = errors.New("user not found")
 		return
 	}
