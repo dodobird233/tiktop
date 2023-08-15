@@ -58,3 +58,8 @@ type CommentListResponse struct {
 	Response Response
 	Comments []CommentResponse
 }
+
+type FollowListResponse struct {
+	Response Response
+	UserList []UserData
+}

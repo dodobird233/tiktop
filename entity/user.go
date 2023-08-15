@@ -3,15 +3,15 @@ package entity
 type UserData struct {
 	UserId          int64  `json:"id"`
 	Name            string `json:"name"`
-	FollowCount     int64  `json:"follow_count,omitempty"`
-	FollowerCount   int64  `json:"follower_count,omitempty"`
+	FollowCount     int64  `json:"follow_count"`
+	FollowerCount   int64  `json:"follower_count"`
 	IsFollow        bool   `json:"is_follow"`
 	Avatar          string `json:"avatar,omitempty"`
 	BackgroundImage string `json:"background_image,omitempty"`
 	Signature       string `json:"signature,omitempty"`
-	TotalFavorited  int64  `json:"total_favorited,omitempty"`
-	WorkCount       int64  `json:"work_count,omitempty"`
-	FavoriteCount   int64  `json:"favorite_count,omitempty"`
+	TotalFavorited  int64  `json:"total_favorited"`
+	WorkCount       int64  `json:"work_count"`
+	FavoriteCount   int64  `json:"favorite_count"`
 }
 
 type User struct {

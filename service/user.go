@@ -7,9 +7,19 @@ import (
 	"tiktop/global"
 )
 
+func IsUserIdExist(userId int64) (flag bool, err error) {
+	var user []entity.User
+	result := global.DB.Where("user_id = ?", userId).Find(&user)
+	if user == nil || len(user) == 0 || result.Error != nil {
+		err = errors.New("user not found")
+		return false, err
+	}
+	return true, nil
+}
+
 func Register(username string, password string) (user *entity.User, err error) {
 	//判断用户名是否存在
-	result := global.DB.Where("user_name = ?", username).First(&user)
+	result := global.DB.Model(&entity.User{}).Where("user_name = ?", username).First(&user)
 	if result.RowsAffected != 0 {
 		err = errors.New("username already exists")
 		return
@@ -27,7 +37,7 @@ func Register(username string, password string) (user *entity.User, err error) {
 }
 func Login(username string, password string) (user *entity.User, err error) {
 	//检查用户名是否存在
-	result := global.DB.Where("user_name = ? and password= ? ", username, password).First(&user)
+	result := global.DB.Model(&entity.User{}).Where("user_name = ? and password= ? ", username, password).First(&user)
 	if result.RowsAffected == 0 {
 		err = errors.New("login failed")
 		return
@@ -36,8 +46,8 @@ func Login(username string, password string) (user *entity.User, err error) {
 }
 func UserInfoByUserId(userId int64) (userdata entity.UserData, err error) {
 	var user entity.User
-	result := global.DB.Where("user_id = ?", userId).First(&user)
-	if result.RowsAffected == 0 {
+	flag, err := IsUserIdExist(userId)
+	if err != nil || !flag {
 		err = errors.New("user not found")
 		return
 	}
