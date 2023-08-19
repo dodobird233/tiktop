@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"sort"
 	"tiktop/entity"
 	"tiktop/global"
 	"tiktop/util"
@@ -71,6 +72,21 @@ func getFollowUserIdListByUserId(userId int64) (followUserIdList []int64, err er
 	return
 }
 
+// 根据用户id以及给定作者id列表返回关注列表情况
+func ParseFollowListByUserIdFormUserId(userId int64, authorIdList *[]int64) (isFollowList []bool, err error) {
+	var followUserIdList []int64
+	followUserIdList, err = getFollowUserIdListByUserId(userId)
+	if err != nil {
+		return nil, err
+	}
+	sort.Slice(followUserIdList, func(i, j int) bool { return followUserIdList[i] < followUserIdList[j] })
+	isFollowList = make([]bool, len(*authorIdList))
+	for i, authorId := range *authorIdList {
+		isFollowList[i] = FindInt64(authorId, &followUserIdList)
+	}
+	return
+}
+
 // 查询关注用户列表
 func GetFollowUserListByUserId(userId int64) (followUserList []entity.UserData, err error) {
 	followUserIdList, err := getFollowUserIdListByUserId(userId)
@@ -116,3 +132,25 @@ func GetFollowerListByUserId(userId int64) (followerList []entity.UserData, err 
 	}
 	return
 }
+
+//func GetFriendListByUserId(userId int64) (userList []entity.UserData, err error) {
+//	followerList, err := GetFollowerListByUserId(userId)
+//	if err != nil {
+//		return nil, err
+//	}
+//	for _, follower := range followerList {
+//		flag, err := QueryFollowOrNot(userId, follower.UserId)
+//		if err != nil {
+//			return nil, err
+//		}
+//		if flag {
+//			userInfo, err := UserInfoByUserId(follower.UserId)
+//			userInfo.IsFollow = true
+//			if err != nil {
+//				return nil, err
+//			}
+//			userList = append(userList, userInfo)
+//		}
+//	}
+//	return
+//}
